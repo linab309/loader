@@ -49,6 +49,7 @@ char USER_Path[4];  /* USER logical drive path */
 /* USER CODE BEGIN Variables */
 #include "stm32l1xx_nucleo.h"
 
+
 FATFS SD_FatFs;
 uint8_t  My_Fs_Init(FATFS *SD_FatFs);
 
@@ -223,12 +224,13 @@ uint8_t update_frameware(void)
 {
     FRESULT fr;
     FIL update_config_fp;
-    uint8_t update_filebuffer[1024];
     UINT br = 0;
     uint32_t SectorAddress = USBD_DFU_APP_DEFAULT_ADD;
+    uint8_t update_filebuffer[512];
     //uint32_t *ramsource = NULL;
     uint32_t status = 0;
-    static uint8_t led_flag = 0;
+    uint8_t led_flag = 0;
+    uint8_t rewrite_cnt = 0;
 
     if(f_open(&update_config_fp,(TCHAR const*)"P-1.BIN",FA_READ) == FR_OK)
     {
@@ -263,26 +265,40 @@ uint8_t update_frameware(void)
                 led_flag = 0;
             }
 
-            fr = f_read(&update_config_fp,update_filebuffer,1024,&br);
+            fr = f_read(&update_config_fp,update_filebuffer,512,&br);
             //ramsource = (uint32_t*)update_filebuffer;
             if(br != 0)
             {
                 status = Flash_If_Write(update_filebuffer,(uint8_t *)SectorAddress,br);
                 printf("file status :%d, %d \r\n",status,br);  
-                if(br <1024)
+                while(status != 0)
+                {
+                    status = Flash_If_Write(update_filebuffer,(uint8_t *)SectorAddress,br);
+                    rewrite_cnt++;
+                    if(rewrite_cnt > 200)
+                    {
+                        rewrite_cnt = 0;
+                        break;
+                            
+                    }
+                }
+                
+                if(br < 512)
                 {
                    printf("file end  \r\n");  
                    f_close(&update_config_fp);
                    printf("file end  \r\n");                 
+                   Flash_If_DeInit();
                    break;
 
                 }
-                SectorAddress += 1024;
+                SectorAddress += 512;
                 
             }
             else
             {
                f_close(&update_config_fp);
+               Flash_If_DeInit();
                break;
             }
         }
