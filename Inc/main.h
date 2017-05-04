@@ -57,6 +57,12 @@
 
 /* Private define ------------------------------------------------------------*/
 
+
+#define SD_POWER_Pin GPIO_PIN_2
+#define SD_POWER_GPIO_Port GPIOA
+
+
+
 /* USER CODE BEGIN Private defines */
 extern void print_usart1(char *format, ...);
 

@@ -124,6 +124,33 @@ uint8_t sound_toggle_simple(uint8_t cnt ,uint16_t sound_on_timer, uint16_t sound
 		return 0;
 }
 
+
+void sd_power_mode(uint8_t mode)
+{
+
+	GPIO_InitTypeDef GPIO_InitStruct;
+
+    if(mode == 1)
+    {
+		GPIO_InitStruct.Pin = SD_POWER_Pin;
+		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
+		HAL_GPIO_Init(SD_POWER_GPIO_Port, &GPIO_InitStruct);	
+        HAL_GPIO_WritePin(SD_POWER_GPIO_Port, SD_POWER_Pin, GPIO_PIN_RESET); 
+
+    }            
+    else
+    {
+        /*Configure GPIO pin : GPS_POWER_Pin */
+        GPIO_InitStruct.Pin = SD_POWER_Pin;
+        GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+        GPIO_InitStruct.Pull = GPIO_PULLUP;
+        HAL_GPIO_Init(SD_POWER_GPIO_Port, &GPIO_InitStruct);    
+        //HAL_GPIO_WritePin(SD_POWER_GPIO_Port, SD_POWER_Pin, GPIO_PIN_SET);    
+    }
+}
+
+
 /* USER CODE END 0 */
 
 int main(void)
@@ -145,6 +172,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  sd_power_mode(1);
   MX_FATFS_Init();
   MX_USART1_UART_Init();
   MX_SPI1_Init();
@@ -162,7 +190,7 @@ int main(void)
 
 
   /* Check if the Key push-button is pressed */
-  if ((BSP_PB_GetState(BUTTON_USER) == GPIO_PIN_RESET)&&(BSP_PB_GetState(BUTTON_WAKEUP) == GPIO_PIN_RESET))
+  if ((BSP_PB_GetState(BUTTON_USER) == GPIO_PIN_SET)&&(BSP_PB_GetState(BUTTON_WAKEUP) == GPIO_PIN_SET))
   {
       printf("update frameware!! \r\n");
       update_frameware();
@@ -182,6 +210,13 @@ int main(void)
       /* Initialize user application's Stack Pointer */
       __set_MSP(*(__IO uint32_t*) USBD_DFU_APP_DEFAULT_ADD);
       JumpToApplication();
+    }
+    else
+    {
+        printf("update frameware 1111!! \r\n");
+        update_frameware();
+        stm_write_eerpom(0xf0,0x55555555);  /*update flag*/
+        sound_toggle_simple(1,500,150);  
     }
 
   }
@@ -310,7 +345,7 @@ static void MX_USART1_UART_Init(void)
 {
 
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 115200;
+  huart1.Init.BaudRate = 57600;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;
