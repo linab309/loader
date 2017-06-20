@@ -1042,6 +1042,8 @@ typedef struct
  */
 #define __HAL_TIM_RESET_HANDLE_STATE(__HANDLE__) ((__HANDLE__)->State = HAL_TIM_STATE_RESET)
 
+#define __HAL_TIM_GET_ENABLE(__HANDLE__)          (((__HANDLE__)->Instance->CR1 &(TIM_CR1_CEN)) == (TIM_CR1_CEN))
+
 /**
   * @brief  Enable the TIM peripheral.
   * @param  __HANDLE__: TIM handle
@@ -1604,3 +1606,5 @@ void TIM_DMACaptureCplt(DMA_HandleTypeDef *hdma);
 #endif /* __STM32L1xx_HAL_TIM_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+
+

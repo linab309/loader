@@ -59,8 +59,12 @@
 /* Includes ------------------------------------------------------------------*/
 #include <string.h>
 #include "ff_gen_drv.h"
-#include "stm32_adafruit_sd.h"
 
+#ifdef defined(STM32L151xB)  
+#include "stm32_adafruit_sd.h"
+#else defined(STM32L151xD)
+#include "v1000_sd.h"
+#endif
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -115,7 +119,7 @@ DSTATUS USER_initialize (
     Stat = STA_NOINIT;
     
     /* Configure the uSD device */
-    if(BSP_SD_Init() == MSD_OK)
+    if(BSP_SD_Init(18) == MSD_OK)
     {
       Stat &= ~STA_NOINIT;
     }

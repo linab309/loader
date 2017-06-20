@@ -84,6 +84,7 @@ void HAL_MspInit(void)
   /* USER CODE END MspInit 1 */
 }
 
+#if 0
 void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
 {
 
@@ -114,7 +115,8 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
   }
 
 }
-
+#endif
+#if 0
 void HAL_SPI_MspDeInit(SPI_HandleTypeDef* hspi)
 {
 
@@ -139,7 +141,7 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* hspi)
   /* USER CODE END SPI1_MspDeInit 1 */
 
 }
-
+#endif
 void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef* htim_pwm)
 {
 

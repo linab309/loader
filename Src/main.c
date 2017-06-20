@@ -48,12 +48,17 @@
 /* USER CODE BEGIN Includes */
 #include "stm_eeprom.h"
 #include "stm32l1xx_nucleo.h"
+#ifdef defined(STM32L151xB)
 #include "stm32_adafruit_sd.h"
+#else
+#include "v1000_sd.h"
+
+#endif
 
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
-SPI_HandleTypeDef hspi1;
+//SPI_HandleTypeDef hspi1;
 
 TIM_HandleTypeDef htim10;
 
@@ -71,7 +76,7 @@ void SystemClock_Config(void);
 void Error_Handler(void);
 static void MX_GPIO_Init(void);
 static void MX_USART1_UART_Init(void);
-static void MX_SPI1_Init(void);
+//static void MX_SPI1_Init(void);
 static void MX_TIM10_Init(void);
                                     
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
@@ -175,7 +180,13 @@ int main(void)
   sd_power_mode(1);
   MX_FATFS_Init();
   MX_USART1_UART_Init();
+
+#ifdef defined(STM32L151xB)
   MX_SPI1_Init();
+#else defined(STM32L151xD)
+
+#endif
+
   MX_TIM10_Init();
 
   /* USER CODE BEGIN 2 */
@@ -288,6 +299,7 @@ void SystemClock_Config(void)
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 }
 
+#if 0
 /* SPI1 init function */
 static void MX_SPI1_Init(void)
 {
@@ -310,7 +322,7 @@ static void MX_SPI1_Init(void)
   }
 
 }
-
+#endif
 /* TIM10 init function */
 static void MX_TIM10_Init(void)
 {
