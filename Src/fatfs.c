@@ -92,6 +92,8 @@ uint16_t Flash_If_Init(void)
 { 
   /* Unlock the internal flash */  
   HAL_FLASH_Unlock();
+  __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP|FLASH_FLAG_WRPERR | FLASH_FLAG_PGAERR
+                  | FLASH_FLAG_SIZERR | FLASH_FLAG_OPTVERR | FLASH_FLAG_OPTVERRUSR);  
   return 0;
 }
 
@@ -155,7 +157,13 @@ uint16_t Flash_If_Write(uint8_t *src, uint8_t *dest, uint32_t Len)
       if(*(uint32_t *)(src + i) != *(uint32_t*)(dest+i))
       {
         /* Flash content doesn't match SRAM content */
-        return 2;
+        if(HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, (uint32_t)(dest+i), *(uint32_t*)(src+i)) == HAL_OK)
+        {
+            if(*(uint32_t *)(src + i) != *(uint32_t*)(dest+i))
+               return 2;                
+        }
+        
+
       }
     }
     else
@@ -219,6 +227,7 @@ uint8_t  My_Fs_Init(FATFS *SD_FatFs)
   
 }
 
+#define FLASH_PAGE_TO_BE_PROTECTED (OB_WRP1_PAGES32TO47 | OB_WRP1_PAGES48TO63)  
 
 uint8_t update_frameware(void)
 {
@@ -232,11 +241,44 @@ uint8_t update_frameware(void)
     uint8_t led_flag = 0;
     uint8_t rewrite_cnt = 0;
 
+    /*Variable used to handle the Options Bytes*/
+    static FLASH_OBProgramInitTypeDef OptionsBytesStruct;
+
     if(f_open(&update_config_fp,(TCHAR const*)"P-1.BIN",FA_READ) == FR_OK)
     {
          
         Flash_If_Init();
-        Flash_If_Erase();
+        /* Unlock the Options Bytes *************************************************/
+
+        
+        HAL_FLASH_OB_Unlock();  
+#if 0        
+        /* Get pages write protection status ****************************************/
+        HAL_FLASHEx_OBGetConfig(&OptionsBytesStruct);
+        
+        
+        if((OptionsBytesStruct.WRPSector0To31 & FLASH_PAGE_TO_BE_PROTECTED) == FLASH_PAGE_TO_BE_PROTECTED)
+        {
+          /* Restore write protected pages */
+          OptionsBytesStruct.OptionType   = OPTIONBYTE_WRP;
+          OptionsBytesStruct.WRPState     = OB_WRPSTATE_DISABLE;
+          OptionsBytesStruct.WRPSector0To31 = FLASH_PAGE_TO_BE_PROTECTED;
+          if(HAL_FLASHEx_OBProgram(&OptionsBytesStruct) != HAL_OK)
+          {
+              ;
+          }
+        
+          /* Generate System Reset to load the new option byte values ***************/
+          HAL_FLASH_OB_Launch();
+        }
+        /* Lock the Options Bytes *************************************************/
+        HAL_FLASH_OB_Lock();    
+#endif        
+        //if ((OptionsBytesStruct.WRPSector0To31 & FLASH_PAGE_TO_BE_PROTECTED) == 0x00)
+        {        
+            Flash_If_Erase();
+        }
+        
         while(1)        
         {
 

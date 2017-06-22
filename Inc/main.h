@@ -50,7 +50,7 @@
 #define USBD_DFU_MAX_ITF_NUM                   1
 #define USBD_DFU_XFER_SIZE                     1024   /* Max DFU Packet Size   = 1024 bytes */
 #define USBD_DFU_APP_DEFAULT_ADD               ((uint32_t)0x08005000) /*ADDR_FLASH_PAGE_14*/
-#define USBD_DFU_APP_END_ADD                   ((uint32_t)0x08020000) /*ADDR_FLASH_PAGE_64*/
+#define USBD_DFU_APP_END_ADD                   ((uint32_t)0x08060000) /*ADDR_FLASH_PAGE_64*/
 
 
 /* USER CODE END Includes */
