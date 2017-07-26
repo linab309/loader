@@ -204,9 +204,11 @@ int main(void)
   if ((BSP_PB_GetState(BUTTON_USER) == GPIO_PIN_SET)&&(BSP_PB_GetState(BUTTON_WAKEUP) == GPIO_PIN_SET))
   {
       printf("update frameware!! \r\n");
-      update_frameware();
-      stm_write_eerpom(0xf0,0x55555555);  /*update flag*/
-      sound_toggle_simple(1,500,150);  
+      if(0 == update_frameware())
+      {
+          stm_write_eerpom(0xf0,0x55555555);  /*update flag*/
+          sound_toggle_simple(1,500,150);  
+      }
   }
   //else
 

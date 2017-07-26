@@ -242,7 +242,7 @@ uint8_t update_frameware(void)
     uint8_t rewrite_cnt = 0;
 
     /*Variable used to handle the Options Bytes*/
-    static FLASH_OBProgramInitTypeDef OptionsBytesStruct;
+   // static FLASH_OBProgramInitTypeDef OptionsBytesStruct;
 
     if(f_open(&update_config_fp,(TCHAR const*)"P-1.BIN",FA_READ) == FR_OK)
     {
@@ -251,7 +251,7 @@ uint8_t update_frameware(void)
         /* Unlock the Options Bytes *************************************************/
 
         
-        HAL_FLASH_OB_Unlock();  
+        //HAL_FLASH_OB_Unlock();  
 #if 0        
         /* Get pages write protection status ****************************************/
         HAL_FLASHEx_OBGetConfig(&OptionsBytesStruct);
@@ -312,7 +312,7 @@ uint8_t update_frameware(void)
             if(br != 0)
             {
                 status = Flash_If_Write(update_filebuffer,(uint8_t *)SectorAddress,br);
-                printf("file status :%d, %d \r\n",status,br);  
+                //printf("file status :%d, %d \r\n",status,br);  
                 while(status != 0)
                 {
                     status = Flash_If_Write(update_filebuffer,(uint8_t *)SectorAddress,br);
@@ -327,9 +327,9 @@ uint8_t update_frameware(void)
                 
                 if(br < 512)
                 {
-                   printf("file end  \r\n");  
+                   //printf("file end  \r\n");  
                    f_close(&update_config_fp);
-                   printf("file end  \r\n");                 
+                   //printf("file end  \r\n");                 
                    Flash_If_DeInit();
                    break;
 
@@ -344,7 +344,11 @@ uint8_t update_frameware(void)
                break;
             }
         }
+
+        return 0;
     }
+    else
+        return 1;
 
 }
 /* USER CODE END Application */
