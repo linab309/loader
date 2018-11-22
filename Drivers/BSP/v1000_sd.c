@@ -239,7 +239,7 @@ uint8_t BSP_SD_ReadBlocks(uint32_t *pData, uint64_t ReadAddr, uint32_t BlockSize
    err = HAL_SD_ReadBlocks(&uSdHandle, pData, ReadAddr, BlockSize, NumOfBlocks);
   if(err != SD_OK)
   {
-    printf("err :%d \r\n",err);
+    //printf("err :%d \r\n",err);
     return MSD_ERROR;
   }
   else

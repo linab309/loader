@@ -119,7 +119,7 @@ DSTATUS USER_initialize (
     Stat = STA_NOINIT;
     
     /* Configure the uSD device */
-    if(BSP_SD_Init(18) == MSD_OK)
+    if(BSP_SD_Init(28) == MSD_OK)
     {
       Stat &= ~STA_NOINIT;
     }
@@ -246,7 +246,7 @@ DRESULT USER_ioctl (
     case GET_SECTOR_COUNT :
       BSP_SD_GetCardInfo(&CardInfo);
       *(DWORD*)buff = CardInfo.CardCapacity / BLOCK_SIZE;
-  	printf("GET_SECTOR_COUNT :%d \r\n",*(DWORD*)buff);
+  	   //printf("GET_SECTOR_COUNT :%d \r\n",*(DWORD*)buff);
   
       res = RES_OK;
       break;
@@ -255,7 +255,7 @@ DRESULT USER_ioctl (
     case GET_SECTOR_SIZE :
   	BSP_SD_GetCardInfo(&CardInfo);
       *(WORD*)buff = CardInfo.CardBlockSize;
-  	printf("GET_SECTOR_SIZE :%d \r\n",*(WORD*)buff);
+  	//printf("GET_SECTOR_SIZE :%d \r\n",*(WORD*)buff);
       res = RES_OK;
       break;
     
@@ -263,7 +263,7 @@ DRESULT USER_ioctl (
     case GET_BLOCK_SIZE :
       BSP_SD_GetCardInfo(&CardInfo);
       *(DWORD*)buff = CardInfo.CardBlockSize;
-  	printf("GET_BLOCK_SIZE :%d \r\n",*(DWORD*)buff);
+  	//printf("GET_BLOCK_SIZE :%d \r\n",*(DWORD*)buff);
       break;
     
     default:

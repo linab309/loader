@@ -137,10 +137,10 @@ void sd_power_mode(uint8_t mode)
 
     if(mode == 1)
     {
-		GPIO_InitStruct.Pin = SD_POWER_Pin;
-		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-		GPIO_InitStruct.Pull = GPIO_NOPULL;
-		HAL_GPIO_Init(SD_POWER_GPIO_Port, &GPIO_InitStruct);	
+        GPIO_InitStruct.Pin = SD_POWER_Pin;
+        GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+        GPIO_InitStruct.Pull = GPIO_NOPULL;
+        HAL_GPIO_Init(SD_POWER_GPIO_Port, &GPIO_InitStruct);	
         HAL_GPIO_WritePin(SD_POWER_GPIO_Port, SD_POWER_Pin, GPIO_PIN_RESET); 
 
     }            
@@ -156,7 +156,29 @@ void sd_power_mode(uint8_t mode)
 }
 
 
+
+
 /* USER CODE END 0 */
+uint8_t get_key(void)
+{
+    uint8_t count_time = 0;
+    
+    while((BSP_PB_GetState(BUTTON_USER) == GPIO_PIN_SET)&&(BSP_PB_GetState(BUTTON_WAKEUP) == GPIO_PIN_SET))
+    {
+       HAL_Delay(10);
+       count_time++;
+       if(count_time >= 200)
+       {
+           break;
+       }
+    }
+
+    if(count_time >= 200)
+        return  1;
+    else
+        return  0;
+
+}
 
 int main(void)
 {
@@ -197,13 +219,13 @@ int main(void)
   /* Configure KEY Button */
   BSP_PB_Init(BUTTON_USER,BUTTON_MODE_GPIO);  
   BSP_PB_Init(BUTTON_WAKEUP,BUTTON_MODE_GPIO);
-  printf("bootloard!! \r\n");
+  //printf("bootloader!! \r\n");
 
 
   /* Check if the Key push-button is pressed */
-  if ((BSP_PB_GetState(BUTTON_USER) == GPIO_PIN_SET)&&(BSP_PB_GetState(BUTTON_WAKEUP) == GPIO_PIN_SET))
+  if (get_key() == 1)
   {
-      printf("update frameware!! \r\n");
+      //printf("update frameware!! \r\n");
       if(0 == update_frameware())
       {
           stm_write_eerpom(0xf0,0x55555555);  /*update flag*/
@@ -226,7 +248,7 @@ int main(void)
     }
     else
     {
-        printf("update frameware 1111!! \r\n");
+        //printf("update frameware 1111!! \r\n");
         update_frameware();
         stm_write_eerpom(0xf0,0x55555555);  /*update flag*/
         sound_toggle_simple(1,500,150);  

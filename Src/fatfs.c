@@ -210,11 +210,11 @@ uint8_t  My_Fs_Init(FATFS *SD_FatFs)
     {
     	if(f_mount(SD_FatFs, (TCHAR const*)USER_Path, 0) != FR_OK)
     	{
-    	    printf("BSP_SD_INIT_FAILED \r\n");
+    	    //printf("BSP_SD_INIT_FAILED \r\n");
     	}  
     	else
     	{
-    	    printf("\r\n mkdir_init \r\n");  
+    	    //printf("\r\n mkdir_init \r\n");  
 
         }
     }
@@ -243,10 +243,11 @@ uint8_t update_frameware(void)
 
     /*Variable used to handle the Options Bytes*/
    // static FLASH_OBProgramInitTypeDef OptionsBytesStruct;
+    //printf("f_open  P-1.BIN  \r\n");
 
     if(f_open(&update_config_fp,(TCHAR const*)"P-1.BIN",FA_READ) == FR_OK)
     {
-         
+        sound_toggle_simple(3,50,50);   
         Flash_If_Init();
         /* Unlock the Options Bytes *************************************************/
 
