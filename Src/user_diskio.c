@@ -168,13 +168,15 @@ DRESULT USER_read (
   /* USER CODE BEGIN READ */
 
     DRESULT res = RES_OK;
-    
-    if(BSP_SD_ReadBlocks((uint32_t*)buff, 
-                         (uint64_t)(sector * BLOCK_SIZE), 
-                         BLOCK_SIZE, 
-                         count) != MSD_OK)
+    if(BSP_SD_IsDetected() != SD_NOT_PRESENT)  
     {
-      res = RES_ERROR;
+        if(BSP_SD_ReadBlocks((uint32_t*)buff, 
+                             (uint64_t)(sector * BLOCK_SIZE), 
+                             BLOCK_SIZE, 
+                             count) != MSD_OK)
+        {
+          res = RES_ERROR;
+        }
     }
     
     return res;
@@ -201,12 +203,14 @@ DRESULT USER_write (
   /* USER CODE HERE */
 
     DRESULT res = RES_OK;
-    
-    if(BSP_SD_WriteBlocks((uint32_t*)buff, 
-                          (uint64_t)(sector * BLOCK_SIZE), 
-                          BLOCK_SIZE, count) != MSD_OK)
+    if(BSP_SD_IsDetected() != SD_NOT_PRESENT)   
     {
-      res = RES_ERROR;
+        if(BSP_SD_WriteBlocks((uint32_t*)buff, 
+                              (uint64_t)(sector * BLOCK_SIZE), 
+                              BLOCK_SIZE, count) != MSD_OK)
+        {
+          res = RES_ERROR;
+        }
     }
     
     return res;

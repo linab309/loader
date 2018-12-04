@@ -219,13 +219,13 @@ int main(void)
   /* Configure KEY Button */
   BSP_PB_Init(BUTTON_USER,BUTTON_MODE_GPIO);  
   BSP_PB_Init(BUTTON_WAKEUP,BUTTON_MODE_GPIO);
-  //printf("bootloader!! \r\n");
+  printf("bootloader :%s!! \r\n",__DATE__);
 
 
   /* Check if the Key push-button is pressed */
   if (get_key() == 1)
   {
-      //printf("update frameware!! \r\n");
+      printf("update frameware!! \r\n");
       if(0 == update_frameware())
       {
           stm_write_eerpom(0xf0,0x55555555);  /*update flag*/
@@ -248,7 +248,7 @@ int main(void)
     }
     else
     {
-        //printf("update frameware 1111!! \r\n");
+        printf("update frameware 1111!! \r\n");
         update_frameware();
         stm_write_eerpom(0xf0,0x55555555);  /*update flag*/
         sound_toggle_simple(1,500,150);  

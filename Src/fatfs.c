@@ -48,6 +48,7 @@ char USER_Path[4];  /* USER logical drive path */
 
 /* USER CODE BEGIN Variables */
 #include "stm32l1xx_nucleo.h"
+#include "v1000_sd.h"
 
 
 FATFS SD_FatFs;
@@ -244,6 +245,10 @@ uint8_t update_frameware(void)
     /*Variable used to handle the Options Bytes*/
    // static FLASH_OBProgramInitTypeDef OptionsBytesStruct;
     //printf("f_open  P-1.BIN  \r\n");
+    if(BSP_SD_IsDetected() == SD_NOT_PRESENT)   
+    {
+        return 1;
+    }
 
     if(f_open(&update_config_fp,(TCHAR const*)"P-1.BIN",FA_READ) == FR_OK)
     {
