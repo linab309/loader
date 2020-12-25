@@ -70,6 +70,7 @@ typedef enum
   LED_GPS ,
   LED_BULE,
   LED_SURPORT,
+  LED_GPS_2,
 
   LED_MORE = LED_SURPORT
 } Led_TypeDef;
@@ -116,7 +117,7 @@ bool;
 /** @defgroup STM32L1XX_NUCLEO_LED LED Constants
   * @{
   */
-#define LEDn                             6
+#define LEDn                             7
 
 #define LED_GREEN_PIN                         GPIO_PIN_0
 #define LED_GREEN_GPIO_PORT                   GPIOB
@@ -150,7 +151,10 @@ bool;
 #define LED_SURPORT_GPIO_CLK_ENABLE()           __HAL_RCC_GPIOB_CLK_ENABLE()  
 #define LED_SURPORT_GPIO_CLK_DISABLE()          __HAL_RCC_GPIOB_CLK_DISABLE()  
 
-
+#define LED_GPS_2_PIN                           GPIO_PIN_8
+#define LED_GPS_2_PORT                          GPIOB
+#define LED_GPS_2_GPIO_CLK_ENABLE()           __HAL_RCC_GPIOB_CLK_ENABLE()  
+#define LED_GPS_2_GPIO_CLK_DISABLE()          __HAL_RCC_GPIOB_CLK_DISABLE()  
 
 
 

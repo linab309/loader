@@ -85,9 +85,9 @@
 /** @defgroup STM32L1XX_NUCLEO_Private_Variables Private Variables
   * @{
   */ 
-GPIO_TypeDef* LED_PORT[LEDn] = {LED_GREEN_GPIO_PORT,LED_RED_GPIO_PORT,LED_SD_GPIO_PORT,LED_GPS_GPIO_PORT,LED_BULE_GPIO_PORT,LED_SURPORT_GPIO_PORT};
+GPIO_TypeDef* LED_PORT[LEDn] = {LED_GREEN_GPIO_PORT,LED_RED_GPIO_PORT,LED_SD_GPIO_PORT,LED_GPS_GPIO_PORT,LED_BULE_GPIO_PORT,LED_SURPORT_GPIO_PORT,LED_GPS_2_PORT};
 
-const uint16_t LED_PIN[LEDn] = {  LED_GREEN_PIN ,LED_RED_PIN ,LED_SD_PIN ,  LED_GPS_PIN ,  LED_BULE_PIN,  LED_SURPORT_PIN};
+const uint16_t LED_PIN[LEDn] = {  LED_GREEN_PIN ,LED_RED_PIN ,LED_SD_PIN ,  LED_GPS_PIN ,  LED_BULE_PIN,  LED_SURPORT_PIN, LED_GPS_2_PIN};
 
 
 GPIO_TypeDef* BUTTON_PORT[BUTTONn]  = {USER_BUTTON_GPIO_PORT,WAKEUP_BUTTON_GPIO_PORT}; 
@@ -209,7 +209,9 @@ void BSP_LED_Init(Led_TypeDef Led)
       case LED_SURPORT:
           HAL_GPIO_WritePin(LED_PORT[Led],LED_PIN[Led], GPIO_PIN_RESET);
           break;
-
+      case LED_GPS_2:
+          HAL_GPIO_WritePin(LED_PORT[Led],LED_PIN[Led], GPIO_PIN_SET);
+          break;
   } 
 
 
@@ -250,7 +252,9 @@ void BSP_LED_DeInit(Led_TypeDef Led)
       case LED_SURPORT:
           HAL_GPIO_WritePin(LED_PORT[Led],LED_PIN[Led], GPIO_PIN_RESET);
           break;
-
+      case LED_GPS_2:
+          HAL_GPIO_WritePin(LED_PORT[Led],LED_PIN[Led], GPIO_PIN_SET);
+          break;
   }  
   /* DeInit the GPIO_LED pin */
   gpio_init_structure.Pin = LED_PIN[Led];

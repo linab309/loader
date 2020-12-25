@@ -212,7 +212,8 @@ int main(void)
   MX_TIM10_Init();
 
   /* USER CODE BEGIN 2 */
-  BSP_LED_Init(LED_GPS);  
+  BSP_LED_Init(LED_GPS);
+  BSP_LED_Init(LED_GPS_2);   
   BSP_LED_Init(LED_SD);  
   BSP_LED_Init(LED_SURPORT);  
   
