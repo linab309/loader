@@ -216,7 +216,7 @@ int main(void)
   BSP_LED_Init(LED_GPS_2);   
   BSP_LED_Init(LED_SD);  
   BSP_LED_Init(LED_SURPORT);  
-  
+  BSP_LED_Off(LED_GPS);
   /* Configure KEY Button */
   BSP_PB_Init(BUTTON_USER,BUTTON_MODE_GPIO);  
   BSP_PB_Init(BUTTON_WAKEUP,BUTTON_MODE_GPIO);

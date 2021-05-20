@@ -201,10 +201,9 @@ void BSP_LED_Init(Led_TypeDef Led)
           break;
       case LED_SD:
           HAL_GPIO_WritePin(LED_PORT[Led],LED_PIN[Led], GPIO_PIN_RESET);
-
           break;
       case LED_GPS:
-          HAL_GPIO_WritePin(LED_PORT[Led],LED_PIN[Led], GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(LED_PORT[Led],LED_PIN[Led], GPIO_PIN_SET);
           break;
       case LED_SURPORT:
           HAL_GPIO_WritePin(LED_PORT[Led],LED_PIN[Led], GPIO_PIN_RESET);
@@ -247,7 +246,7 @@ void BSP_LED_DeInit(Led_TypeDef Led)
 
           break;
       case LED_GPS:
-          HAL_GPIO_WritePin(LED_PORT[Led],LED_PIN[Led], GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(LED_PORT[Led],LED_PIN[Led], GPIO_PIN_SET);
           break;
       case LED_SURPORT:
           HAL_GPIO_WritePin(LED_PORT[Led],LED_PIN[Led], GPIO_PIN_RESET);
@@ -270,7 +269,7 @@ void BSP_LED_DeInit(Led_TypeDef Led)
   */
 void BSP_LED_On(Led_TypeDef Led)
 {
-  if((Led == LED_GREEN)||(Led == LED_RED)||(Led == LED_BULE))
+  if((Led == LED_GREEN)||(Led == LED_RED)||(Led == LED_BULE)||(Led == LED_GPS)||(Led == LED_GPS_2))
   {
       HAL_GPIO_WritePin(LED_PORT[Led], LED_PIN[Led], GPIO_PIN_RESET); 
   }
@@ -289,7 +288,7 @@ void BSP_LED_On(Led_TypeDef Led)
   */
 void BSP_LED_Off(Led_TypeDef Led)
 {
-    if((Led == LED_GREEN)||(Led == LED_RED)||(Led == LED_BULE))
+    if((Led == LED_GREEN)||(Led == LED_RED)||(Led == LED_BULE)||(Led == LED_GPS)||(Led == LED_GPS_2))
     {
         HAL_GPIO_WritePin(LED_PORT[Led], LED_PIN[Led], GPIO_PIN_SET); 
     }

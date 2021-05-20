@@ -250,7 +250,7 @@ uint8_t update_frameware(void)
         return 1;
     }
 
-    if(f_open(&update_config_fp,(TCHAR const*)"P-1.BIN",FA_READ) == FR_OK)
+    if(f_open(&update_config_fp,(TCHAR const*)"P-10.BIN",FA_READ) == FR_OK)
     {
         sound_toggle_simple(3,50,50);   
         Flash_If_Init();
@@ -292,16 +292,19 @@ uint8_t update_frameware(void)
             {
                 BSP_LED_On(LED_SD);  
                 led_flag++;
+                //printf("LED_SD ON  \r\n");  
             }
             else if(led_flag == 1)
             {
                 BSP_LED_On(LED_GPS);  
+                //printf("LED_GPS ON  \r\n");  
                 led_flag++;
             }
 
             else if(led_flag == 2)            
             {
                 BSP_LED_On(LED_SURPORT);  
+                //printf("LED_SURPORT ON  \r\n");  
                 led_flag++;
             }
 
@@ -310,8 +313,11 @@ uint8_t update_frameware(void)
                 BSP_LED_Off(LED_SD);
                 BSP_LED_Off(LED_GPS);
                 BSP_LED_Off(LED_SURPORT);
+                //printf("ALL Off  \r\n");  
+                //led_flag++;
                 led_flag = 0;
             }
+
 
             fr = f_read(&update_config_fp,update_filebuffer,512,&br);
             //ramsource = (uint32_t*)update_filebuffer;
